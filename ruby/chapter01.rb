@@ -45,8 +45,8 @@ def get_articles(client, page, order = 'score:')
   start = (page - 1) * ARTICLES_PER_PAGE
   ids   = client.zrevrange(order, start, start + ARTICLES_PER_PAGE - 1)
 
-  ids.inject([]) { |articles, id|
-    articles << client.hgetall(id).merge(id: id)
+  ids.map { |article_id|
+    client.hgetall(article_id).merge(id: article_id)
   }
 end
 
